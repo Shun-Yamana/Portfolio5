@@ -1,0 +1,10 @@
+﻿fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+redis
+snowflake-connector-python
+authlib
+python-jose[cryptography]
+httpx
+python-multipart

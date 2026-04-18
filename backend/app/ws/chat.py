@@ -1,6 +1,7 @@
 from fastapi import APIRouter, WebSocket
 from starlette.websockets import WebSocketDisconnect
 
+from ..infra.redis_pubsub import publish
 from .manager import manager
 
 router = APIRouter()
@@ -8,13 +9,13 @@ router = APIRouter()
 
 @router.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)  # ここで accept() + 接続登録（あなたの設計）
+    await manager.connect(websocket)
 
     try:
         await websocket.send_json({"type": "welcome", "message": "Welcome to the chat!"})
 
         while True:
-            data = await websocket.receive_json()  # dict が返る（receive_textだとstr）
+            data = await websocket.receive_json()
 
             if data.get("type") != "send_message":
                 continue
@@ -23,10 +24,8 @@ async def websocket_endpoint(websocket: WebSocket):
             if not text:
                 continue
 
-            await manager.broadcast({"type": "message", "text": text})
+            payload = {"type": "message", "room_id": "global", "text": text}
+            await publish("chat:global", payload)
 
     except WebSocketDisconnect:
-        manager.disconnect(websocket)  # await不要（setから外すだけ）
-
-    
-
+        manager.disconnect(websocket)

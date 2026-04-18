@@ -8,7 +8,7 @@ function Chat() {
   const [input, setInput] = useState('')
 
   useEffect(() => {
-    const ws = new WebSocket('ws://127.0.0.1:8000/ws/chat')
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL)
     wsRef.current = ws
 
     ws.onopen = () => setConnectionState('open')

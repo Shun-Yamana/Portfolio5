@@ -1,3 +1,6 @@
+import uuid
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, WebSocket
 from starlette.websockets import WebSocketDisconnect
 
@@ -24,7 +27,16 @@ async def websocket_endpoint(websocket: WebSocket):
             if not text:
                 continue
 
-            payload = {"type": "message", "room_id": "global", "text": text}
+            message_id = str(uuid.uuid4())
+            created_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+            payload = {
+                "type": "message",
+                "room_id": "global",
+                "text": text,
+                "message_id": message_id,
+                "created_at": created_at,
+            }
             await publish("chat:global", payload)
 
     except WebSocketDisconnect:

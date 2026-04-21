@@ -21,9 +21,13 @@ function Chat() {
         return
       }
 
-      if (data?.type === 'message') {
-        setMessages((prev) => [...prev, data])
-      }
+      if (data?.type !== 'message') return
+      if (!data.message_id) return
+
+      setMessages((prev) => {
+        if (prev.some((m) => m.message_id === data.message_id)) return prev
+        return [...prev, data]
+      })
     }
 
     ws.onerror = () => setConnectionState('error')

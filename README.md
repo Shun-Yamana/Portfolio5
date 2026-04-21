@@ -108,3 +108,9 @@ npx vite --host localhost --port 5174 --strictPort
   - `VITE_WS_URL` が正しいか（8000/8001）
   - backend の WebSocket が起動しているか
 
+
+
+## 実務っぽさ（重複排除・順序の土台）
+- backend が message_id(UUID) と created_at(UTC ISO8601) を付与して配信
+- frontend は message_id をキーに重複メッセージを表示しない（分散時の二重配信対策）
+

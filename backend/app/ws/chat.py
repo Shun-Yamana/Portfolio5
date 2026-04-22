@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, WebSocket
 from starlette.websockets import WebSocketDisconnect
 
+from ..infra.firehose import firehose_put
 from ..infra.redis_pubsub import publish
 from .manager import manager
 
@@ -38,6 +39,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 "created_at": created_at,
             }
             await publish("chat:global", payload)
+            await firehose_put({"message_id": message_id, "content": text, "created_at": created_at})
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)

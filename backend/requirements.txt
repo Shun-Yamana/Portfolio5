@@ -3,6 +3,7 @@ uvicorn[standard]
 pydantic-settings
 python-dotenv
 redis
+boto3
 snowflake-connector-python
 authlib
 python-jose[cryptography]

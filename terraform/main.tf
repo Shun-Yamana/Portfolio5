@@ -62,14 +62,15 @@ module "redis" {
 module "backend" {
   source = "./modules/backend"
 
-  project           = var.project
-  vpc_id            = module.network.vpc_id
-  public_subnet_ids = module.network.public_subnet_ids
+  project            = var.project
+  vpc_id             = module.network.vpc_id
+  public_subnet_ids  = module.network.public_subnet_ids
   private_subnet_ids = module.network.private_subnet_ids
-  sg_alb_id         = module.network.sg_alb_id
-  sg_ecs_id         = module.network.sg_ecs_id
-  redis_url         = "redis://${module.redis.redis_endpoint}:6379/0"
-  acm_arn           = module.dns.acm_arn_alb
+  sg_alb_id          = module.network.sg_alb_id
+  sg_ecs_id          = module.network.sg_ecs_id
+  redis_url          = "redis://${module.redis.redis_endpoint}:6379/0"
+  acm_arn            = module.dns.acm_arn_alb
+  bedrock_policy_arn = module.analytics.bedrock_policy_arn
 }
 
 module "frontend" {

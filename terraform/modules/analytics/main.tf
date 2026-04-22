@@ -158,3 +158,21 @@ resource "aws_athena_workgroup" "main" {
 
   tags = { Name = var.project }
 }
+
+# ── IAM Policy（ECSタスクがBedrockを呼ぶ権限）────────
+resource "aws_iam_policy" "bedrock" {
+  name = "${var.project}-bedrock"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["bedrock:InvokeModel"]
+      Resource = [
+        "arn:aws:bedrock:${var.region}::foundation-model/anthropic.claude-3-haiku-20240307-v1:0"
+      ]
+    }]
+  })
+
+  tags = { Name = "${var.project}-bedrock" }
+}

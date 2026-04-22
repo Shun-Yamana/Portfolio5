@@ -6,3 +6,4 @@ variable "sg_alb_id"          { type = string }
 variable "sg_ecs_id"          { type = string }
 variable "redis_url"          { type = string }
 variable "acm_arn"            { type = string }
+variable "bedrock_policy_arn" { type = string }

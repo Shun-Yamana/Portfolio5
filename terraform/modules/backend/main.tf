@@ -73,6 +73,12 @@ resource "aws_iam_role_policy" "secrets_access" {
   })
 }
 
+# Bedrockへのアクセス権限
+resource "aws_iam_role_policy_attachment" "bedrock" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = var.bedrock_policy_arn
+}
+
 # ── ECS Cluster ───────────────────────────────────────
 resource "aws_ecs_cluster" "main" {
   name = var.project

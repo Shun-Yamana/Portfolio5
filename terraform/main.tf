@@ -30,8 +30,11 @@ provider "aws" {
 module "network" {
   source = "./modules/network"
 
-  project  = var.project
-  vpc_cidr = var.vpc_cidr
+  project          = var.project
+  region           = var.region
+  vpc_cidr         = var.vpc_cidr
+  use_nat_gateway  = var.use_nat_gateway
+  use_vpc_endpoints = var.use_vpc_endpoints
 }
 
 module "dns" {
@@ -86,4 +89,5 @@ module "analytics" {
   source = "./modules/analytics"
 
   project = var.project
+  region  = var.region
 }

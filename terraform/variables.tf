@@ -20,3 +20,15 @@ variable "domain" {
   description = "Route53で管理するドメイン名"
   type        = string
 }
+
+variable "use_nat_gateway" {
+  description = "trueでNAT Gateway、falseでVPC Endpoint（開発用）"
+  type        = bool
+  default     = false
+}
+
+variable "use_vpc_endpoints" {
+  description = "trueでVPC Endpointを作成（ECS→ECR/Logs/Secretsmanager）"
+  type        = bool
+  default     = false
+}
